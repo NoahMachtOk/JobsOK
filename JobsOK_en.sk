@@ -1,0 +1,371 @@
+options:
+	p: <##18969B>&lJOBS &8→&7
+	jobgui: <##18969B>&lJOBS &8→ &0Menu
+
+function jobgui(t: player):
+	set {_jobs} to a new chest inventory with 4 row named "{@jobgui}"
+	set {_fill} to black stained glass pane without entire tooltip
+	loop all integers between 0 and 35:
+		set slot loop-integer of {_jobs} to {_fill}
+	set slot 4 of {_jobs} to skull of {_t} named "&8• {@p} &7Statistiken" with lore "&f" and "&8➥ &7Prestiges: &e%{jobs::%{_t}%::prestigecount}%"
+	set slot 10 of {_jobs} to iron pickaxe named "{@p} <#24E1E9>Miner-Job" with lore "&f" and "&8→ <#24E1E9>Break ores for this job" and "&8➥ &7Level: <#24E1E9>%{jobs::%{_t}%::miner::level}%" and "&8➥ &7Experience: <#24E1E9>%{jobs::%{_t}%::miner::exp}%&8/<#13EE57>%{jobs::%{_t}%::miner::nextmax}%" and "&8➥ &7Prestige: <#24E1E9>%{jobs::%{_t}%::miner::prestige}%" and "&f" and "&8➥ %{jobs::%{_t}%::miner::canprestige}%"
+	set slot 12 of {_jobs} to zombie head named "{@p} <#C63C19>Fighter-Job" with lore "&f" and "&8→ <#C63C19>Kill mobs for this job" and "&8➥ &7Level: <#C63C19>%{jobs::%{_t}%::fighter::level}%" and "&8➥ &7Experience: <#C63C19>%{jobs::%{_t}%::fighter::exp}%&8/<#13EE57>%{jobs::%{_t}%::fighter::nextmax}%" and "&8➥ &7Prestige: <#C63C19>%{jobs::%{_t}%::fighter::prestige}%" and "&f" and "&8➥ %{jobs::%{_t}%::fighter::canprestige}%"
+	set slot 14 of {_jobs} to brush named "{@p} <#EEB828>Digger-Job" with lore "&f" and "&8→ <#EEB828>Break sand(-related) blocks for this job" and "&8➥ &7Level: <#EEB828>%{jobs::%{_t}%::shovel::level}%" and "&8➥ &7Experience: <#EEB828>%{jobs::%{_t}%::shovel::exp}%&8/<#13EE57>%{jobs::%{_t}%::shovel::nextmax}%" and "&8➥ &7Prestige: <#EEB828>%{jobs::%{_t}%::shovel::prestige}%" and "&f" and "&8➥ %{jobs::%{_t}%::shovel::canprestige}%"
+	set slot 16 of {_jobs} to oak log named "{@p} <#EE8919>Timberjack-Job" with lore "&f" and "&8→ <#EE8919>Break wood for this job" and "&8➥ &7Level: <#EEB828>%{jobs::%{_t}%::timber::level}%" and "&8➥ &7Experience: <#EEB828>%{jobs::%{_t}%::timber::exp}%&8/<#13EE57>%{jobs::%{_t}%::timber::nextmax}%" and "&8➥ &7Prestige: <#EEB828>%{jobs::%{_t}%::timber::prestige}%" and "&f" and "&8➥ %{jobs::%{_t}%::timber::canprestige}%"
+	set slot 20 of {_jobs} to spyglass named "{@p} <#19EEB2>Tourist-Job" with lore "&f" and "&8→ <#19EEB2>Walk through the world for this job" and "&8➥ &7Level: <#19EEB2>%{jobs::%{_t}%::tourist::level}%" and "&8➥ &7Experience: <#19EEB2>%{jobs::%{_t}%::tourist::exp}%&8/<#13EE57>%{jobs::%{_t}%::tourist::nextmax}%" and "&8➥ &7Prestige: <#19EEB2>%{jobs::%{_t}%::tourist::prestige}%" and "&f" and "&8➥ %{jobs::%{_t}%::tourist::canprestige}%"
+	set slot 22 of {_jobs} to fishing rod named "{@p} <#1964EE>Fisherman-Job" with lore "&f" and "&8→ <#1964EE>Fish in the water for this job" and "&8➥ &7Level: <#1964EE>%{jobs::%{_t}%::fisher::level}%" and "&8➥ &7Experience: <#1964EE>%{jobs::%{_t}%::fisher::exp}%&8/<#1964EE>%{jobs::%{_t}%::fisher::nextmax}%" and "&8➥ &7Prestige: <#1964EE>%{jobs::%{_t}%::fisher::prestige}%" and "&f" and "&8➥ %{jobs::%{_t}%::fisher::canprestige}%"
+	set slot 24 of {_jobs} to diamond hoe named "{@p} <#F3BE0E>Farmer-Job" with lore "&f" and "&8→ <#F3BE0E>Break crops for this job" and "&8➥ &7Level: <#F3BE0E>%{jobs::%{_t}%::farmer::level}%" and "&8➥ &7Experience: <#F3BE0E>%{jobs::%{_t}%::farmer::exp}%&8/<#F3BE0E>%{jobs::%{_t}%::farmer::nextmax}%" and "&8➥ &7Prestige: <#F3BE0E>%{jobs::%{_t}%::farmer::prestige}%" and "&f" and "&8➥ %{jobs::%{_t}%::farmer::canprestige}%"
+
+	open {_jobs} to {_t}
+	
+
+
+function checklevelup(t: player, j: text):
+	{jobs::%{_t}%::%{_j}%::exp} >= {jobs::%{_t}%::%{_j}%::nextmax}:
+		remove {jobs::%{_t}%::%{_j}%::nextmax} from {jobs::%{_t}%::%{_j}%::exp}
+		set {jobs::%{_t}%::%{_j}%::lastmax} to {jobs::%{_t}%::%{_j}%::nextmax} 
+		set {jobs::%{_t}%::%{_j}%::nextmax} to ({jobs::%{_t}%::%{_j}%::lastmax} + ({jobs::%{_t}%::%{_j}%::lastmax} / 100) * 20)   
+		add 1 to {jobs::%{_t}%::%{_j}%::level} 
+		add 0.05 to {jobs::%{_t}%::%{_j}%::eventmoney} 
+		add 0.05 to {jobs::%{_t}%::%{_j}%::eventexp}
+		send "{@p} &7You're now level &e%{jobs::%{_t}%::%{_j}%::level}% &7in the job <#13EE57>%uppercase {_j}%" to {_t}
+		{jobs::%{_t}%::%{_j}%::level} >= 100:
+			set {jobs::%{_t}%::%{_j}%::canprestige} to "&7You can <#13EE57>prestige&7! &8(&eClick here&8)"
+			send "{@p} &7You can prestige in the job %uppercase {_j}% &7! &8(&e/jobs&8)" to {_t}
+
+command /jobs:
+	aliases: jobmenu, jobs:jobs, jobs:jobmenu 
+	usage: {@p} &7Syntax: &e/jobs 
+	trigger:
+		jobgui(player)
+
+on join:		
+	
+	{jobs::%player%::miner::level} is not set:
+		set {jobs::%player%::miner::level} to 0 
+		set {jobs::%player%::miner::exp} to 0
+		set {jobs::%player%::miner::nextmax} to 1000
+		set {jobs::%player%::miner::prestige} to 0 
+		set {jobs::%player%::miner::canprestige} to "&7You <#E01414>can't prestige"
+		set {jobs::%player%::miner::eventmoney} to 0.20
+		set {jobs::%player%::miner::eventexp} to 0.20
+	
+	{jobs::%player%::fighter::*} is not set:
+		set {jobs::%player%::fighter::level} to 0 
+		set {jobs::%player%::fighter::exp} to 0
+		set {jobs::%player%::fighter::nextmax} to 1000
+		set {jobs::%player%::fighter::prestige} to 0 
+		set {jobs::%player%::fighter::canprestige} to "&7You <#E01414>can't prestige"
+		set {jobs::%player%::fighter::eventmoney} to 0.20
+		set {jobs::%player%::fighter::eventexp} to 0.20
+	
+	{jobs::%player%::shovel::*} is not set:
+		set {jobs::%player%::shovel::level} to 0 
+		set {jobs::%player%::shovel::exp} to 0
+		set {jobs::%player%::shovel::nextmax} to 1000
+		set {jobs::%player%::shovel::prestige} to 0 
+		set {jobs::%player%::shovel::canprestige} to "&7You <#E01414>can't prestige"
+		set {jobs::%player%::shovel::eventmoney} to 0.20
+		set {jobs::%player%::shovel::eventexp} to 0.20
+	
+	{jobs::%player%::timber::*} is not set:
+		set {jobs::%player%::timber::level} to 0 
+		set {jobs::%player%::timber::exp} to 0
+		set {jobs::%player%::timber::nextmax} to 1000
+		set {jobs::%player%::timber::prestige} to 0 
+		set {jobs::%player%::timber::canprestige} to "&7You <#E01414>can't prestige"
+		set {jobs::%player%::timber::eventmoney} to 0.20
+		set {jobs::%player%::timber::eventexp} to 0.20
+	
+	{jobs::%player%::tourist::*} is not set:
+		set {jobs::%player%::tourist::level} to 0 
+		set {jobs::%player%::tourist::exp} to 0
+		set {jobs::%player%::tourist::nextmax} to 1000
+		set {jobs::%player%::tourist::prestige} to 0 
+		set {jobs::%player%::tourist::canprestige} to "&7You <#E01414>can't prestige"
+		set {jobs::%player%::tourist::eventmoney} to 0.20
+		set {jobs::%player%::tourist::eventexp} to 0.20
+	
+	{jobs::%player%::fisher::*} is not set:
+		set {jobs::%player%::fisher::level} to 0
+		set {jobs::%player%::fisher::exp} to 0 
+		set {jobs::%player%::fisher::nextmax} to 1000
+		set {jobs::%player%::fisher::prestige} to 0 
+		set {jobs::%player%::fisher::canprestige} to "&7You <#E01414>can't prestige"
+		set {jobs::%player%::fisher::eventexp} to 0.20
+		set {jobs::%player%::fisher::eventmoney} to 0.20
+	
+	{jobs::%player%::farmer::*} is not set:
+		set {jobs::%player%::farmer::level} to 0
+		set {jobs::%player%::farmer::exp} to 0 
+		set {jobs::%player%::farmer::nextmax} to 1000
+		set {jobs::%player%::farmer::prestige} to 0 
+		set {jobs::%player%::farmer::canprestige} to "&7You <#E01414>can't prestige"
+		set {jobs::%player%::farmer::eventexp} to 0.20
+		set {jobs::%player%::farmer::eventmoney} to 0.20
+
+
+on inventory-click:
+	name of event-inventory is "{@jobgui}":
+		cancel event 
+	
+	clicked inventory is player's inventory:
+		stop 
+
+	index of event-slot is 10:
+		{jobs::%player%::miner::canprestige} is "&7You can <#13EE57>prestige&7! &8(&eClick here&8)":
+			set {jobs::%player%::miner::canprestige} to "&7You <#E01414>can't prestige"
+			set {jobs::%player%::miner::exp} to 0 
+			set {jobs::%player%::miner::level} to 1
+			add 1 to {jobs::%player%::miner::prestige}  
+			add 1 to {jobs::%player%::prestigecount}
+			send title "{@p} &7Prestige erfolgreich!" 
+			add 100000 to player's balance 
+	
+	index of event-slot is 12:
+		{jobs::%player%::fighter::canprestige} is "&7You can <#13EE57>prestige&7! &8(&eClick here&8)":
+			set {jobs::%player%::fighter::canprestige} to "&7You <#E01414>can't prestige"
+			set {jobs::%player%::fighter::exp} to 0 
+			set {jobs::%player%::fighter::level} to 1
+			add 1 to {jobs::%player%::fighter::prestige}  
+			add 1 to {jobs::%player%::prestigecount}
+			send title "{@p} &7Prestige erfolgreich!" 
+			add 100000 to player's balance 
+	
+	index of event-slot is 14:
+		{jobs::%player%::shovel::canprestige} is "&7You can <#13EE57>prestige&7! &8(&eClick here&8)":
+			set {jobs::%player%::shovel::canprestige} to "&7You <#E01414>can't prestige"
+			set {jobs::%player%::shovel::exp} to 0 
+			set {jobs::%player%::shovel::level} to 1
+			add 1 to {jobs::%player%::shovel::prestige}  
+			add 1 to {jobs::%player%::prestigecount}
+			send title "{@p} &7Prestige erfolgreich!" 
+			add 100000 to player's balance 
+		
+	index of event-slot is 16:
+		{jobs::%player%::timber::canprestige} is "&7You can <#13EE57>prestige&7! &8(&eClick here&8)":
+			set {jobs::%player%::timber::canprestige} to "&7You <#E01414>can't prestige"
+			set {jobs::%player%::timber::exp} to 0 
+			set {jobs::%player%::timber::level} to 1
+			add 1 to {jobs::%player%::timber::prestige}  
+			add 1 to {jobs::%player%::prestigecount}
+			close player's inventory 
+			send title "{@p} &7Prestige erfolgreich!" 
+			add 100000 to player's balance 
+	
+	index of event-slot is 20:
+		{jobs::%player%::tourist::canprestige} is "&7You can <#13EE57>prestige&7! &8(&eClick here&8)":
+			set {jobs::%player%::tourist::canprestige} to "&7You <#E01414>can't prestige"
+			set {jobs::%player%::tourist::exp} to 0 
+			set {jobs::%player%::tourist::level} to 1
+			add 1 to {jobs::%player%::tourist::prestige}  
+			add 1 to {jobs::%player%::prestigecount}
+			close player's inventory 
+			send title "{@p} &7Prestige erfolgreich!" 
+			add 100000 to player's balance 
+	
+	index of event-slot is 22:
+		{jobs::%player%::fisher::canprestige} is "&7You can <#13EE57>prestige&7! &8(&eClick here&8)":
+			set {jobs::%player%::fisher::canprestige} to "&7You <#E01414>can't prestige"
+			set {jobs::%player%::fisher::exp} to 0 
+			set {jobs::%player%::fisher::level} to 1
+			add 1 to {jobs::%player%::fisher::prestige}  
+			add 1 to {jobs::%player%::prestigecount}
+			close player's inventory 
+			send title "{@p} &7Prestige erfolgreich!" 
+			add 100000 to player's balance
+	
+	index of event-slot is 24:
+		{jobs::%player%::fisher::canprestige} is "&7You can <#13EE57>prestige&7! &8(&eClick here&8)":
+			set {jobs::%player%::farmer::canprestige} to "&7You <#E01414>can't prestige"
+			set {jobs::%player%::farmer::exp} to 0 
+			set {jobs::%player%::farmer::level} to 1
+			add 1 to {jobs::%player%::farmer::prestige}  
+			add 1 to {jobs::%player%::prestigecount}
+			close player's inventory 
+			send title "{@p} &7Prestige erfolgreich!" 
+			add 100000 to player's balance
+
+
+
+on place:
+	set {placedblocks::%location of event-block%} to true
+
+on break:
+	{placedblocks::%location of event-block%} is true:
+		delete {placedblocks::%location of event-block%}
+
+# --- MINER JOB ---
+on break of coal ore or redstone ore or lapis ore or copper ore or deepslate coal ore or deepslate redstone ore or deepslate lapis ore or deepslate copper ore:
+	event is cancelled:
+		stop 
+	{placedblocks::%location of event-block%} is set: 
+		stop 
+	{cobbleore.%player%} < 10:
+		add 1 to {cobbleore.%player%}
+		stop 
+	add {jobs::%player%::miner::eventexp} to {jobs::%player%::miner::exp}
+	add {jobs::%player%::miner::eventmoney} to player's balance 
+	{placedblocks::%location of event-block%} is true:
+		delete {placedblocks::%location of event-block%}
+	send action bar "{@p} <#13EE57>+ &e%{jobs::%player%::miner::eventmoney}%$ &8| <#13EE57>+ &e%{jobs::%player%::miner::eventexp}% EXP" 
+	set {cobbleore.%player%} to 0 
+	if {jobs::%player%::miner::exp} >= {jobs::%player%::miner::nextmax}:
+		checklevelup(player, "miner")
+	stop 
+
+on break of gold ore or iron ore or deepslate gold ore or deepslate iron ore:
+	event is cancelled:
+		stop 
+	{placedblocks::%location of event-block%} is set: 
+		stop 
+	{highkeyore.%player%} < 3:
+		add 1 to {highkey.%player%}
+		stop 
+	add {jobs::%player%::miner::eventexp} to {jobs::%player%::miner::exp}
+	add {jobs::%player%::miner::eventmoney} to player's balance 
+	{placedblocks::%location of event-block%} is true:
+		delete {placedblocks::%location of event-block%}
+	send action bar "{@p} <#13EE57>+ &e%{jobs::%player%::miner::eventmoney}%$ &8| <#13EE57>+ &e%{jobs::%player%::miner::eventexp}% EXP" 
+	if {jobs::%player%::miner::exp} >= {jobs::%player%::miner::nextmax}:
+		checklevelup(player, "miner")
+	stop 
+
+on break of diamond ore or ancient debris or deepslate diamond ore:
+	event is cancelled:
+		stop 
+	{placedblocks::%location of event-block%} is set: 
+		stop 
+	{lowkeyore.%player%} < 1:
+		add 1 to {lowkeyore.%player%}
+	add {jobs::%player%::miner::eventexp} to {jobs::%player%::miner::exp}
+	add {jobs::%player%::miner::eventmoney} to player's balance 
+	{placedblocks::%location of event-block%} is true:
+		delete {placedblocks::%location of event-block%}
+	set {lowkeyore.%player%} to 0
+	send action bar "{@p} <#13EE57>+ &e%{jobs::%player%::miner::eventmoney}%$ &8| <#13EE57>+ &e%{jobs::%player%::miner::eventexp}% EXP" 
+	if {jobs::%player%::miner::exp} >= {jobs::%player%::miner::nextmax}:
+		checklevelup(player, "miner")
+	stop 
+
+on break of stone or granite or diorite or deepslate or tuff:
+	event is cancelled:
+		stop 
+	{placedblocks::%location of event-block%} is set: 
+		stop 
+	{cobbled.%player%} < 10:
+		add 1 to {cobbled.%player%}
+		stop 
+	add {jobs::%player%::miner::eventexp} to {jobs::%player%::miner::exp}
+	add {jobs::%player%::miner::eventmoney} to player's balance 
+	{placedblocks::%location of event-block%} is true:
+		delete {placedblocks::%location of event-block%}
+	send action bar "{@p} <#13EE57>+ &e%{jobs::%player%::miner::eventmoney}%$ &8| <#13EE57>+ &e%{jobs::%player%::miner::eventexp}% EXP" 
+	set {cobbled.%player%} to 0 
+	if {jobs::%player%::miner::exp} >= {jobs::%player%::miner::nextmax}:
+		checklevelup(player, "miner")
+	stop 
+#
+# ---[!!! GRÄBER JOB !!!]---
+#
+
+on break of sand or dirt or grass block or gravel or rooted dirt or coarse dirt or farmland or clay or red sand or snow block:
+	event is cancelled:
+		stop 
+	{placedblocks::%location of event-block%} is set: 
+		stop 
+	{sands.%player%} < 10:
+		add 1 to {sands.%player%}
+		stop 
+	add {jobs::%player%::shovel::eventexp} to {jobs::%player%::shovel::exp}
+	add {jobs::%player%::shovel::eventmoney} to player's balance 
+	{placedblocks::%location of event-block%} is true:
+		delete {placedblocks::%location of event-block%}
+	send action bar "{@p} <#13EE57>+ &e%{jobs::%player%::shovel::eventmoney}%$ &8| <#13EE57>+ &e%{jobs::%player%::shovel::eventexp}% EXP" 
+	set {sands.%player%} to 0 
+	if {jobs::%player%::shovel::exp} >= {jobs::%player%::shovel::nextmax}:
+		checklevelup(player, "shovel")
+#
+# ---[!!! TIMBER JOB !!!]---
+#
+
+on break of oak log or oak wood or stripped oak log or stripped oak wood or birch log or birch wood or stripped birch log or stripped birch wood or cherry log or cherry wood or stripped cherry log or stripped cherry wood or spruce log or spruce wood or stripped spruce log or stripped spruce wood or dark oak log or dark oak wood or stripped dark oak log or stripped dark oak wood or acacia log or acacia wood or stripped acacia wood or stripped acacia log or jungle log or jungle wood or stripped jungle log or stripped jungle wood or pale oak log or pale oak wood or stripped pale oak log or stripped pale oak wood or crimson stem or stripped crimson stem or warped stem or stripped warped stem: 
+	event is cancelled:
+		stop 
+	{placedblocks::%location of event-block%} is set:
+		stop 
+	add {jobs::%player%::timber::eventexp} to {jobs::%player%::timber::exp}
+	add {jobs::%player%::timber::eventmoney} to player's balance 
+	send action bar "{@p} <#13EE57>+ &e%{jobs::%player%::timber::eventmoney}%$ &8| <#13EE57>+ &e%{jobs::%player%::timber::eventexp}% EXP"
+	{placedblocks::%location of event-block%} is true:
+		delete {placedblocks::%location of event-block%}
+	if {jobs::%player%::timber::exp} >= {jobs::%player%::timber::nextmax}:
+		checklevelup(player, "timber")
+	stop 
+#
+# ---[!!! JÄGER JOB !!!]---
+#
+
+
+on death:
+	attacker is a player:
+		victim is a player:
+			add {jobs::%attacker%::fighter::eventexp} + 50 to {jobs::%attacker%::fighter::exp}
+			add {jobs::%attacker%::fighter::eventmoney} + 100 to attacker's balance 
+			send action bar "{@p} <#13EE57>+ &e%{jobs::%attacker%::fighter::eventmoney} + 100%$ &8| <#13EE57>+ &e%{jobs::%attacker%::fighter::eventexp} + 50% EXP" to attacker
+			if {jobs::%attacker%::fighter::exp} >= {jobs::%attacker%::fighter::nextmax}:
+				checklevelup(attacker, "fighter")
+			stop 
+		add {jobs::%attacker%::fighter::eventexp} to {jobs::%attacker%::fighter::exp}
+		add {jobs::%attacker%::fighter::eventmoney} to attacker's balance 
+		send action bar "{@p} <#13EE57>+ &e%{jobs::%attacker%::fighter::eventmoney}%$ &8| <#13EE57>+ &e%{jobs::%attacker%::fighter::eventexp}% EXP" to attacker
+		if {jobs::%attacker%::fighter::exp} >= {jobs::%attacker%::fighter::nextmax}:
+			checklevelup(attacker, "fighter")
+		stop 
+
+#
+# ---[!!! TOURIST JOB !!!]--- 
+#
+
+on player move:
+	{tourist.%player%} < 30:
+		add 1 to {tourist.%player%}
+		stop 
+	add {jobs::%player%::tourist::eventexp} to {jobs::%player%::tourist::exp}
+	add {jobs::%player%::tourist::eventmoney} to player's balance 
+	send action bar "{@p} <#13EE57>+ &e%{jobs::%player%::tourist::eventmoney}%$ &8| <#13EE57>+ &e%{jobs::%player%::tourist::eventexp}% EXP" 
+	set {tourist.%player%} to 0 
+	if {jobs::%player%::tourist::exp} >= {jobs::%player%::tourist::nextmax}:
+		checklevelup(player, "tourist")	
+
+#
+# ---[!!! FISHER JOB !!!]---
+#
+
+on fishing state change:
+	fishing state is caught fish:
+		add {jobs::%player%::fisher::eventexp} to {jobs::%player%::fisher::exp}
+		add {jobs::%player%::fisher::eventmoney} to player's balance 
+		send action bar "{@p} <#13EE57>+ &e%{jobs::%player%::fisher::eventmoney}%$ &8| <#13EE57>+ &e%{jobs::%player%::fisher::eventexp}% EXP" to player
+		{jobs::%player%::fisher::exp} >= {jobs::%player%::fisher::nextmax}:
+			checklevelup(player, "fisher")
+
+#
+# ---[!!! FARMER JOB !!!]---
+#
+
+on break of wheat or carrot or potato or red mushroom or brown mushroom or beetroot or sweet berry bush:
+	event is cancelled:
+		stop 
+	{farmer.%player%} < 2:
+		add 1 to {farmer.%player%}
+		stop 
+	add {jobs::%player%::farmer::eventexp} to {jobs::%player%::farmer::exp}
+	add {jobs::%player%::farmer::eventmoney} to player's balance 
+	set {farmer.%player%} to 0
+	send action bar "{@p} <#13EE57>+ &e%{jobs::%player%::farmer::eventmoney}%$ &8| <#13EE57>+ &e%{jobs::%player%::farmer::eventexp}% EXP" to player
+	{jobs::%player%::farmer::exp} >= {jobs::%player%::farmer::nextmax}:
+		checklevelup(player, "farmer")
+
+
+
